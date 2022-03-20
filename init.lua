@@ -1,6 +1,6 @@
 local storage = minetest.get_mod_storage()
 if not storage:get_string('luahist') then storage:set_string('luahist','') end
-function genlist()
+local function genfs()
     local fspec =
     "size[16,9]"..
     "field[0.2,0.3;16,1;code;Code:;]"..
@@ -13,14 +13,14 @@ end
 minetest.register_chatcommand("lua", {
     description = "Open luagui",
     func = function(param)
-core.show_formspec('luagui',genlist())
+core.show_formspec('luagui',genfs())
 end})
 core.register_on_formspec_input(function(formname, fields)
 	if formname == "luagui" then
 	if fields.run then
 		core.run_server_chatcommand('/lua',fields.code)
 		storage:set_string('luahist',storage:get_string('luahist')..core.formspec_escape(fields.code)..'\n')
-		core.show_formspec('luagui',genlist())
+		core.show_formspec('luagui',genfs())
         elseif fields.save then
 		storage:set_string('luahist',fields.hist)
 	end
